@@ -16,6 +16,18 @@
     list: document.querySelector('#leaderboard-list'),
   };
 
+  const iconStar = `
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M12 2.9l2.78 5.63 6.22.91-4.5 4.39 1.06 6.2L12 17.1l-5.56 2.93 1.06-6.2-4.5-4.39 6.22-.91L12 2.9Z" fill="currentColor"></path>
+    </svg>
+  `;
+
+  const iconChevron = `
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <polyline points="6 9 12 15 18 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline>
+    </svg>
+  `;
+
   const iconSpeaking = `
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M4 5h16v10H4z" fill="none" stroke="currentColor" stroke-width="2"></path>
@@ -82,7 +94,7 @@
         .includes(state.query.toLowerCase());
 
       return yearMatch && quarterMatch && categoryMatch && queryMatch;
-    }).sort((a, b) => b.totalPoints - a.totalPoints);
+    }).sort((a, b) => b.totalPoints - a.totalPoints || a.rank - b.rank);
   }
 
   function renderPodium(filteredData) {
@@ -93,28 +105,43 @@
       return;
     }
 
-    const [first, second, third] = [topThree[0], topThree[1], topThree[2]];
+    const left = topThree[1];
+    const center = topThree[0];
+    const right = topThree[2];
 
     function renderPodiumCard(entry, visualRank) {
       if (!entry) {
-        return '<div></div>';
+        return '<div class="podium-slot podium-empty"></div>';
       }
 
+      const isChampion = visualRank === 1;
+
       return `
-        <article class="podium-card podium-rank-${visualRank}">
-          <img class="avatar" src="${escapeHtml(entry.avatarUrl)}" alt="${escapeHtml(entry.name)}" loading="lazy" />
-          <h3 class="person-name">${escapeHtml(entry.name)}</h3>
-          <p class="person-role">${escapeHtml(entry.title)} (${escapeHtml(entry.departmentCode)})</p>
-          <p class="score-value"><span>★</span>${entry.totalPoints}</p>
+        <article class="podium-slot podium-rank-${visualRank}">
+          <div class="podium-person">
+            <div class="podium-avatar-wrap">
+              <img class="podium-avatar" src="${escapeHtml(entry.avatarUrl)}" alt="${escapeHtml(entry.name)}" loading="lazy" />
+              <span class="podium-badge">${visualRank}</span>
+            </div>
+            <h3 class="podium-name">${escapeHtml(entry.name)}</h3>
+            <p class="podium-role">${escapeHtml(entry.title)} (${escapeHtml(entry.departmentCode)})</p>
+            <p class="podium-total ${isChampion ? 'podium-total-gold' : 'podium-total-blue'}">
+              <span class="score-star">${iconStar}</span>
+              <span>${entry.totalPoints}</span>
+            </p>
+          </div>
+          <div class="podium-block">
+            <span class="podium-block-rank">${visualRank}</span>
+          </div>
         </article>
       `;
     }
 
     nodes.podium.innerHTML = `
       <div class="podium-grid">
-        ${renderPodiumCard(second, 2)}
-        ${renderPodiumCard(first, 1)}
-        ${renderPodiumCard(third, 3)}
+        ${renderPodiumCard(left, 2)}
+        ${renderPodiumCard(center, 1)}
+        ${renderPodiumCard(right, 3)}
       </div>
     `;
   }
@@ -161,44 +188,44 @@
     nodes.list.innerHTML = filteredData
       .map((entry, index) => {
         const isExpanded = state.expandedId === entry.id;
+        const metrics = [];
+
+        if (entry.categoryStats.learning > 0) {
+          metrics.push(`
+            <div class="metric">
+              ${iconLearning}
+              <strong>${entry.categoryStats.learning}</strong>
+            </div>
+          `);
+        }
+
+        if (entry.categoryStats.publicSpeaking > 0) {
+          metrics.push(`
+            <div class="metric">
+              ${iconSpeaking}
+              <strong>${entry.categoryStats.publicSpeaking}</strong>
+            </div>
+          `);
+        }
 
         return `
           <article class="rank-card ${isExpanded ? 'expanded' : ''}" data-id="${entry.id}">
             <div class="rank-main">
-              <div class="rank-value">${index + 1}</div>
+              <div class="rank-value">${entry.rank}</div>
               <img class="avatar" src="${escapeHtml(entry.avatarUrl)}" alt="${escapeHtml(entry.name)}" loading="lazy" />
               <div>
                 <h3 class="person-name">${escapeHtml(entry.name)}</h3>
                 <p class="person-role">${escapeHtml(entry.title)} (${escapeHtml(entry.departmentCode)})</p>
               </div>
               <div class="metric-stack">
-                ${
-                  entry.categoryStats.learning > 0
-                    ? `<div class="metric">${iconLearning}<strong>${entry.categoryStats.learning}</strong></div>`
-                    : ''
-                }
-                ${
-                  entry.categoryStats.publicSpeaking > 0
-                    ? `<div class="metric">${iconSpeaking}<strong>${entry.categoryStats.publicSpeaking}</strong></div>`
-                    : ''
-                }
+                ${metrics.join('')}
               </div>
               <div class="score">
                 <p class="score-label">TOTAL</p>
-                <p class="score-value"><span>★</span>${entry.totalPoints}</p>
+                <p class="score-value"><span class="score-star">${iconStar}</span><span>${entry.totalPoints}</span></p>
               </div>
-              <button class="toggle-row" type="button" aria-label="Toggle recent activity" data-toggle="${entry.id}">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <polyline
-                    points="6 9 12 15 18 9"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    transform="${isExpanded ? 'rotate(180 12 12)' : ''}"
-                  ></polyline>
-                </svg>
+              <button class="toggle-row ${isExpanded ? 'is-open' : ''}" type="button" aria-label="Toggle recent activity" aria-expanded="${isExpanded}" data-toggle="${entry.id}">
+                ${iconChevron}
               </button>
             </div>
             ${isExpanded ? renderActivities(entry) : ''}
@@ -210,6 +237,14 @@
 
   function render() {
     const filtered = getFilteredData();
+
+    if (
+      state.expandedId &&
+      !filtered.some((entry) => entry.id === state.expandedId)
+    ) {
+      state.expandedId = null;
+    }
+
     renderPodium(filtered);
     renderList(filtered);
   }

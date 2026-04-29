@@ -168,24 +168,24 @@
 
   function scoreForRank(rank) {
     if (rank === 1) {
-      return 536;
+      return 548;
     }
 
     if (rank === 2) {
-      return 328;
+      return 347;
     }
 
     if (rank === 3) {
-      return 320;
+      return 334;
     }
 
     if (rank === 4) {
-      return 320;
+      return 329;
     }
 
-    const base = 317 - Math.floor((rank - 4) * 1.7);
+    const base = 324 - Math.floor((rank - 4) * 1.73);
     const noise = Math.floor(random() * 4) - 1;
-    return Math.max(48, base + noise);
+    return Math.max(44, base + noise);
   }
 
   function formatDate(date) {
@@ -255,6 +255,9 @@
   }
 
   employees.sort((a, b) => b.totalPoints - a.totalPoints);
+  employees.forEach((entry, index) => {
+    entry.rank = index + 1;
+  });
 
   window.LEADERBOARD_DATA = employees;
 })();
