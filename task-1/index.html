@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leaderboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="page-header">
+        <h1 class="page-title">Leaderboard</h1>
+        <p class="page-subtitle">Top performers based on contributions and activity</p>
+      </header>
+
+      <section class="filters-card" aria-label="Leaderboard filters">
+        <label class="visually-hidden" for="year-filter">Filter by year</label>
+        <select id="year-filter" class="filter-select">
+          <option value="all">All Years</option>
+        </select>
+
+        <label class="visually-hidden" for="quarter-filter">Filter by quarter</label>
+        <select id="quarter-filter" class="filter-select">
+          <option value="all">All Quarters</option>
+        </select>
+
+        <label class="visually-hidden" for="category-filter">Filter by category</label>
+        <select id="category-filter" class="filter-select">
+          <option value="all">All Categories</option>
+        </select>
+
+        <div class="search-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"></circle>
+            <line x1="16.65" y1="16.65" x2="21" y2="21" stroke="currentColor" stroke-width="2"></line>
+          </svg>
+          <label class="visually-hidden" for="employee-search">Search employee</label>
+          <input id="employee-search" type="search" placeholder="Search employee..." autocomplete="off" />
+        </div>
+      </section>
+
+      <section id="podium" class="podium-section" aria-label="Top 3 performers"></section>
+      <section id="leaderboard-list" class="leaderboard-list" aria-label="Leaderboard entries"></section>
+    </main>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
