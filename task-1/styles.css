@@ -28,17 +28,17 @@ body {
 }
 
 .page-shell {
-  width: min(1280px, calc(100vw - 52px));
-  margin: 30px auto 42px;
+  width: min(1200px, calc(100vw - 64px));
+  margin: 24px auto 36px;
 }
 
 .page-header {
-  margin: 0 0 26px;
+  margin: 0 0 20px;
 }
 
 .page-title {
   margin: 0;
-  font-size: 38px;
+  font-size: 34px;
   line-height: 1.1;
   font-weight: 800;
   letter-spacing: -0.03em;
@@ -46,7 +46,7 @@ body {
 
 .page-subtitle {
   margin: 10px 0 0;
-  font-size: 18px;
+  font-size: 15px;
   line-height: 1.28;
   font-weight: 500;
   color: var(--text-mid);
@@ -57,7 +57,7 @@ body {
   grid-template-columns: 1fr 1fr 1.25fr 2.9fr;
   gap: 12px;
   align-items: center;
-  padding: 20px 24px;
+  padding: 16px 18px;
   border-radius: 14px;
   background: var(--surface);
   border: 1px solid var(--line);
@@ -70,12 +70,12 @@ body {
   width: 100%;
   height: 52px;
   padding: 0 14px;
-  border: 1px solid #4f5867;
+  border: 1px solid var(--line);
   border-radius: 2px;
-  background: #fff;
+  background: #f5f6f8;
   color: #1d2432;
   font-family: inherit;
-  font-size: 31px;
+  font-size: 16px;
   font-weight: 500;
 }
 
@@ -87,9 +87,9 @@ body {
   display: flex;
   align-items: center;
   height: 52px;
-  border: 1px solid #4f5867;
+  border: 1px solid var(--line);
   border-radius: 2px;
-  background: #fff;
+  background: #f5f6f8;
   padding: 0 12px;
 }
 
@@ -97,11 +97,13 @@ body {
   border: 0;
   height: 48px;
   padding: 0 0 0 12px;
-  font-size: 30px;
+  font-size: 16px;
+  background: transparent;
+  min-width: 0;
 }
 
 .search-wrap input::placeholder {
-  color: #515e72;
+  color: #6b7688;
 }
 
 .search-icon {
@@ -110,11 +112,15 @@ body {
   color: #28354a;
 }
 
-.search-wrap input:focus,
 .filter-select:focus,
 .toggle-row:focus-visible {
   outline: 2px solid #7dc4ff;
   outline-offset: 1px;
+}
+
+.search-wrap input:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 .podium-section {
@@ -170,7 +176,7 @@ body {
   display: grid;
   place-items: center;
   color: #fff;
-  font-size: 31px;
+  font-size: 18px;
   font-weight: 700;
 }
 
@@ -196,7 +202,7 @@ body {
 
 .podium-name {
   margin: 14px 0 0;
-  font-size: 26px;
+  font-size: 18px;
   line-height: 1.08;
   font-weight: 700;
   letter-spacing: -0.025em;
@@ -259,7 +265,7 @@ body {
 }
 
 .podium-block-rank {
-  font-size: 86px;
+  font-size: 64px;
   font-weight: 700;
   opacity: 0.24;
 }
@@ -320,7 +326,7 @@ body {
 }
 
 .rank-value {
-  font-size: 42px;
+  font-size: 30px;
   font-weight: 700;
   color: #95a7bc;
   text-align: center;
@@ -337,7 +343,7 @@ body {
 
 .person-name {
   margin: 0;
-  font-size: 17px;
+  font-size: 15px;
   line-height: 1.08;
   font-weight: 700;
   letter-spacing: -0.025em;
@@ -345,7 +351,7 @@ body {
 
 .person-role {
   margin: 8px 0 0;
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.15;
   color: var(--text-mid);
 }
@@ -377,7 +383,7 @@ body {
 
 .metric strong {
   display: block;
-  font-size: 17px;
+  font-size: 15px;
   line-height: 1;
 }
 
@@ -397,7 +403,7 @@ body {
 
 .score-value {
   margin: 8px 0 0;
-  font-size: 22px;
+  font-size: 18px;
   line-height: 1;
   font-weight: 800;
   display: inline-flex;
@@ -500,7 +506,7 @@ body {
   padding: 24px;
   text-align: center;
   color: var(--text-mid);
-  font-size: 24px;
+  font-size: 16px;
 }
 
 .visually-hidden {
@@ -522,25 +528,25 @@ body {
 
   .filter-select,
   .search-wrap input {
-    font-size: 18px;
+    font-size: 15px;
   }
 
   .page-title {
-    font-size: 32px;
+    font-size: 30px;
   }
 
   .page-subtitle {
-    font-size: 17px;
+    font-size: 14px;
   }
 
   .podium-name,
   .person-name {
-    font-size: 24px;
+    font-size: 17px;
   }
 
   .podium-role,
   .person-role {
-    font-size: 16px;
+    font-size: 13px;
   }
 
   .podium-total {
@@ -603,15 +609,15 @@ body {
   }
 
   .person-name {
-    font-size: 25px;
-  }
-
-  .person-role {
     font-size: 16px;
   }
 
+  .person-role {
+    font-size: 13px;
+  }
+
   .score-value {
-    font-size: 32px;
+    font-size: 18px;
   }
 
   .activity-table {
@@ -627,11 +633,11 @@ body {
   }
 
   .page-title {
-    font-size: 30px;
+    font-size: 26px;
   }
 
   .page-subtitle {
-    font-size: 18px;
+    font-size: 14px;
   }
 
   .filters-card {
@@ -644,6 +650,15 @@ body {
   .search-wrap input {
     height: 44px;
     font-size: 16px;
+  }
+
+  .search-wrap {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .search-wrap input {
+    min-width: 0;
   }
 
   .podium-grid {
@@ -684,7 +699,7 @@ body {
   }
 
   .podium-name {
-    font-size: 27px;
+    font-size: 18px;
   }
 
   .podium-role {
@@ -692,11 +707,11 @@ body {
   }
 
   .podium-total {
-    font-size: 24px;
+    font-size: 18px;
   }
 
   .podium-block-rank {
-    font-size: 92px;
+    font-size: 72px;
   }
 
   .activities {
