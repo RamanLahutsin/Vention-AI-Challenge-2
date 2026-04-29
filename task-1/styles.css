@@ -426,6 +426,11 @@ body {
   background: var(--surface);
   box-shadow: var(--card-shadow);
   overflow: hidden;
+  transition: box-shadow 0.2s ease;
+}
+
+.rank-card:hover {
+  box-shadow: 0 10px 28px rgba(26, 49, 84, 0.2);
 }
 
 .rank-card.expanded {
