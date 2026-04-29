@@ -146,8 +146,13 @@ body {
 
 .filter-option:hover,
 .filter-option:focus-visible {
-  background: #e2e2e6;
+  background: #ffffff;
   outline: none;
+}
+
+.filter-option[data-value='all']:hover,
+.filter-option[data-value='all']:focus-visible {
+  background: transparent;
 }
 
 .filter-option[aria-selected='true'] {
