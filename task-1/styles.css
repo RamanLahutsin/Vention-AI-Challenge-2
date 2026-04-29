@@ -173,7 +173,9 @@ body {
   border-radius: 2px;
   background: #f5f6f8;
   padding: 0 12px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .search-wrap input {
@@ -197,7 +199,10 @@ body {
   flex: 0 0 auto;
   opacity: 1;
   transform: translateX(0);
-  transition: opacity 0.2s ease, transform 0.2s ease, width 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    width 0.2s ease;
 }
 
 .filter-trigger:focus-visible,
