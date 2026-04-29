@@ -377,7 +377,7 @@
     }
 
     nodes.list.innerHTML = filteredData
-      .map((entry) => {
+      .map((entry, index) => {
         const isExpanded = state.expandedId === entry.id;
         const metrics = [];
 
@@ -411,7 +411,7 @@
         return `
           <article class="rank-card ${isExpanded ? 'expanded' : ''}" data-id="${entry.id}">
             <div class="rank-main">
-              <div class="rank-value">${entry.rank}</div>
+              <div class="rank-value">${index + 1}</div>
               <img class="avatar" src="${escapeHtml(entry.avatarUrl)}" alt="${escapeHtml(entry.name)}" loading="lazy" />
               <div>
                 <h3 class="person-name">${escapeHtml(entry.name)}</h3>
