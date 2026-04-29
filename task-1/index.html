@@ -20,20 +20,59 @@
       </header>
 
       <section class="filters-card" aria-label="Leaderboard filters">
-        <label class="visually-hidden" for="year-filter">Filter by year</label>
-        <select id="year-filter" class="filter-select">
-          <option value="all">All Years</option>
-        </select>
+        <label id="year-filter-label" class="visually-hidden" for="year-filter-trigger">Filter by year</label>
+        <div class="filter-select custom-dropdown" data-filter="year" data-state-key="year">
+          <button
+            id="year-filter-trigger"
+            type="button"
+            class="filter-trigger"
+            aria-haspopup="listbox"
+            aria-expanded="false"
+            aria-labelledby="year-filter-label year-filter-value"
+          >
+            <span id="year-filter-value" class="filter-trigger-value">All Years</span>
+            <svg class="filter-chevron" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <polyline points="6 9 12 15 18 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline>
+            </svg>
+          </button>
+          <div class="filter-options" role="listbox" aria-labelledby="year-filter-label"></div>
+        </div>
 
-        <label class="visually-hidden" for="quarter-filter">Filter by quarter</label>
-        <select id="quarter-filter" class="filter-select">
-          <option value="all">All Quarters</option>
-        </select>
+        <label id="quarter-filter-label" class="visually-hidden" for="quarter-filter-trigger">Filter by quarter</label>
+        <div class="filter-select custom-dropdown" data-filter="quarter" data-state-key="quarter">
+          <button
+            id="quarter-filter-trigger"
+            type="button"
+            class="filter-trigger"
+            aria-haspopup="listbox"
+            aria-expanded="false"
+            aria-labelledby="quarter-filter-label quarter-filter-value"
+          >
+            <span id="quarter-filter-value" class="filter-trigger-value">All Quarters</span>
+            <svg class="filter-chevron" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <polyline points="6 9 12 15 18 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline>
+            </svg>
+          </button>
+          <div class="filter-options" role="listbox" aria-labelledby="quarter-filter-label"></div>
+        </div>
 
-        <label class="visually-hidden" for="category-filter">Filter by category</label>
-        <select id="category-filter" class="filter-select">
-          <option value="all">All Categories</option>
-        </select>
+        <label id="category-filter-label" class="visually-hidden" for="category-filter-trigger">Filter by category</label>
+        <div class="filter-select custom-dropdown" data-filter="category" data-state-key="category">
+          <button
+            id="category-filter-trigger"
+            type="button"
+            class="filter-trigger"
+            aria-haspopup="listbox"
+            aria-expanded="false"
+            aria-labelledby="category-filter-label category-filter-value"
+          >
+            <span id="category-filter-value" class="filter-trigger-value">All Categories</span>
+            <svg class="filter-chevron" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <polyline points="6 9 12 15 18 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline>
+            </svg>
+          </button>
+          <div class="filter-options" role="listbox" aria-labelledby="category-filter-label"></div>
+        </div>
 
         <div class="search-wrap">
           <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">

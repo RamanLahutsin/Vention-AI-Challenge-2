@@ -65,7 +65,7 @@ body {
   margin-bottom: 30px;
 }
 
-.filter-select,
+.filter-trigger,
 .search-wrap input {
   width: 100%;
   height: 52px;
@@ -79,8 +79,90 @@ body {
   font-weight: 500;
 }
 
-.filter-select {
-  appearance: auto;
+.custom-dropdown {
+  position: relative;
+}
+
+.filter-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.filter-trigger-value {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.filter-chevron {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  color: #1e2532;
+  transition: transform 0.15s ease;
+}
+
+.filter-options {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  padding: 8px 0;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: #f0f0f2;
+  box-shadow: 0 8px 20px rgba(12, 24, 42, 0.18);
+  z-index: 20;
+  max-height: 260px;
+  overflow-y: auto;
+  opacity: 0;
+  transform: translateY(-5px);
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease,
+    visibility 0.15s ease;
+}
+
+.filter-option {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: #1d2432;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: left;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.filter-option:hover,
+.filter-option:focus-visible {
+  background: #e2e2e6;
+  outline: none;
+}
+
+.filter-option[aria-selected='true'] {
+  background: #d9d9de;
+}
+
+.custom-dropdown.is-open .filter-options {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.custom-dropdown.is-open .filter-chevron {
+  transform: rotate(180deg);
 }
 
 .search-wrap {
@@ -112,7 +194,7 @@ body {
   color: #28354a;
 }
 
-.filter-select:focus,
+.filter-trigger:focus-visible,
 .toggle-row:focus-visible {
   outline: 2px solid #7dc4ff;
   outline-offset: 1px;
@@ -526,7 +608,7 @@ body {
     width: min(1280px, calc(100vw - 28px));
   }
 
-  .filter-select,
+  .filter-trigger,
   .search-wrap input {
     font-size: 15px;
   }
@@ -645,7 +727,7 @@ body {
     padding: 14px;
   }
 
-  .filter-select,
+  .filter-trigger,
   .search-wrap,
   .search-wrap input {
     height: 44px;

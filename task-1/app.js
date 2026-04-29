@@ -8,13 +8,17 @@
   };
 
   const nodes = {
-    yearFilter: document.querySelector('#year-filter'),
-    quarterFilter: document.querySelector('#quarter-filter'),
-    categoryFilter: document.querySelector('#category-filter'),
+    dropdowns: {
+      year: document.querySelector('[data-filter="year"]'),
+      quarter: document.querySelector('[data-filter="quarter"]'),
+      category: document.querySelector('[data-filter="category"]'),
+    },
     searchInput: document.querySelector('#employee-search'),
     podium: document.querySelector('#podium'),
     list: document.querySelector('#leaderboard-list'),
   };
+
+  const dropdownRegistry = {};
 
   const iconStar = `
     <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -61,33 +65,206 @@
       .replaceAll("'", '&#39;');
   }
 
+  function registerDropdowns() {
+    Object.entries(nodes.dropdowns).forEach(([filterKey, root]) => {
+      if (!root) {
+        return;
+      }
+
+      const trigger = root.querySelector('.filter-trigger');
+      const valueNode = root.querySelector('.filter-trigger-value');
+      const panel = root.querySelector('.filter-options');
+
+      if (!trigger || !valueNode || !panel) {
+        return;
+      }
+
+      dropdownRegistry[filterKey] = {
+        root,
+        trigger,
+        valueNode,
+        panel,
+        stateKey: root.dataset.stateKey,
+        options: [],
+      };
+    });
+  }
+
+  function closeDropdown(filterKey) {
+    const dropdown = dropdownRegistry[filterKey];
+
+    if (!dropdown) {
+      return;
+    }
+
+    dropdown.root.classList.remove('is-open');
+    dropdown.trigger.setAttribute('aria-expanded', 'false');
+  }
+
+  function closeAllDropdowns(exceptKey = null) {
+    Object.keys(dropdownRegistry).forEach((filterKey) => {
+      if (filterKey === exceptKey) {
+        return;
+      }
+
+      closeDropdown(filterKey);
+    });
+  }
+
+  function focusDropdownOption(filterKey, index) {
+    const dropdown = dropdownRegistry[filterKey];
+
+    if (!dropdown) {
+      return;
+    }
+
+    const optionNodes = [...dropdown.panel.querySelectorAll('.filter-option')];
+
+    if (!optionNodes.length) {
+      return;
+    }
+
+    const safeIndex = Math.max(0, Math.min(optionNodes.length - 1, index));
+    optionNodes[safeIndex].focus();
+  }
+
+  function focusSelectedDropdownOption(filterKey) {
+    const dropdown = dropdownRegistry[filterKey];
+
+    if (!dropdown) {
+      return;
+    }
+
+    const selectedIndex = dropdown.options.findIndex(
+      (option) => option.value === state[dropdown.stateKey],
+    );
+
+    focusDropdownOption(filterKey, selectedIndex >= 0 ? selectedIndex : 0);
+  }
+
+  function moveDropdownOptionFocus(filterKey, step) {
+    const dropdown = dropdownRegistry[filterKey];
+
+    if (!dropdown) {
+      return;
+    }
+
+    const optionNodes = [...dropdown.panel.querySelectorAll('.filter-option')];
+
+    if (!optionNodes.length) {
+      return;
+    }
+
+    const currentIndex = optionNodes.indexOf(document.activeElement);
+    const baseIndex = currentIndex === -1 ? 0 : currentIndex;
+    const nextIndex =
+      (baseIndex + step + optionNodes.length) % optionNodes.length;
+
+    optionNodes[nextIndex].focus();
+  }
+
+  function openDropdown(filterKey, focusSelected = false) {
+    const dropdown = dropdownRegistry[filterKey];
+
+    if (!dropdown) {
+      return;
+    }
+
+    closeAllDropdowns(filterKey);
+    dropdown.root.classList.add('is-open');
+    dropdown.trigger.setAttribute('aria-expanded', 'true');
+
+    if (focusSelected) {
+      focusSelectedDropdownOption(filterKey);
+    }
+  }
+
+  function setDropdownSelection(filterKey, value, shouldRender = true) {
+    const dropdown = dropdownRegistry[filterKey];
+
+    if (!dropdown) {
+      return;
+    }
+
+    const selected =
+      dropdown.options.find((option) => option.value === String(value)) ||
+      dropdown.options[0];
+
+    if (!selected) {
+      return;
+    }
+
+    state[dropdown.stateKey] = selected.value;
+    dropdown.valueNode.textContent = selected.label;
+
+    dropdown.panel.querySelectorAll('.filter-option').forEach((optionNode) => {
+      const isSelected = optionNode.dataset.value === selected.value;
+      optionNode.setAttribute('aria-selected', String(isSelected));
+    });
+
+    if (shouldRender) {
+      render();
+    }
+  }
+
+  function populateDropdownOptions(filterKey, options) {
+    const dropdown = dropdownRegistry[filterKey];
+
+    if (!dropdown) {
+      return;
+    }
+
+    dropdown.options = options.map((option) => ({
+      value: String(option.value),
+      label: String(option.label),
+    }));
+
+    dropdown.panel.innerHTML = dropdown.options
+      .map(
+        (option) => `
+          <button
+            type="button"
+            class="filter-option"
+            role="option"
+            data-value="${escapeHtml(option.value)}"
+            aria-selected="false"
+          >
+            ${escapeHtml(option.label)}
+          </button>
+        `,
+      )
+      .join('');
+
+    setDropdownSelection(filterKey, state[dropdown.stateKey], false);
+  }
+
   function populateFilters(dataset) {
     const years = [...new Set(dataset.map((entry) => entry.year))].sort(
       (a, b) => b - a,
     );
 
-    years.forEach((year) => {
-      const option = document.createElement('option');
-      option.value = String(year);
-      option.textContent = String(year);
-      nodes.yearFilter.append(option);
-    });
+    populateDropdownOptions('year', [
+      { value: 'all', label: 'All Years' },
+      ...years.map((year) => ({ value: String(year), label: String(year) })),
+    ]);
 
-    ['Q1', 'Q2', 'Q3', 'Q4'].forEach((quarter) => {
-      const option = document.createElement('option');
-      option.value = quarter;
-      option.textContent = quarter;
-      nodes.quarterFilter.append(option);
-    });
+    populateDropdownOptions('quarter', [
+      { value: 'all', label: 'All Quarters' },
+      ...['Q1', 'Q2', 'Q3', 'Q4'].map((quarter) => ({
+        value: quarter,
+        label: quarter,
+      })),
+    ]);
 
-    ['Education', 'Public Speaking', 'University Partnership'].forEach(
-      (category) => {
-        const option = document.createElement('option');
-        option.value = category;
-        option.textContent = category;
-        nodes.categoryFilter.append(option);
-      },
-    );
+    populateDropdownOptions('category', [
+      { value: 'all', label: 'All Categories' },
+      ...['Education', 'Public Speaking', 'University Partnership'].map(
+        (category) => ({
+          value: category,
+          label: category,
+        }),
+      ),
+    ]);
   }
 
   function getFilteredData() {
@@ -273,19 +450,114 @@
   }
 
   function bindEvents() {
-    nodes.yearFilter.addEventListener('change', (event) => {
-      state.year = event.target.value;
-      render();
+    Object.entries(dropdownRegistry).forEach(([filterKey, dropdown]) => {
+      dropdown.trigger.addEventListener('click', () => {
+        if (dropdown.root.classList.contains('is-open')) {
+          closeDropdown(filterKey);
+          return;
+        }
+
+        openDropdown(filterKey);
+      });
+
+      dropdown.trigger.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+
+          if (dropdown.root.classList.contains('is-open')) {
+            closeDropdown(filterKey);
+            return;
+          }
+
+          openDropdown(filterKey, true);
+        }
+
+        if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          openDropdown(filterKey, true);
+        }
+
+        if (event.key === 'ArrowUp') {
+          event.preventDefault();
+          openDropdown(filterKey, true);
+        }
+      });
+
+      dropdown.panel.addEventListener('click', (event) => {
+        const optionNode = event.target.closest('.filter-option');
+
+        if (!optionNode) {
+          return;
+        }
+
+        setDropdownSelection(filterKey, optionNode.dataset.value);
+        closeDropdown(filterKey);
+        dropdown.trigger.focus();
+      });
+
+      dropdown.panel.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          event.preventDefault();
+          closeDropdown(filterKey);
+          dropdown.trigger.focus();
+          return;
+        }
+
+        if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          moveDropdownOptionFocus(filterKey, 1);
+          return;
+        }
+
+        if (event.key === 'ArrowUp') {
+          event.preventDefault();
+          moveDropdownOptionFocus(filterKey, -1);
+          return;
+        }
+
+        if (event.key === 'Home') {
+          event.preventDefault();
+          focusDropdownOption(filterKey, 0);
+          return;
+        }
+
+        if (event.key === 'End') {
+          event.preventDefault();
+          const optionCount =
+            dropdown.panel.querySelectorAll('.filter-option').length;
+          focusDropdownOption(filterKey, optionCount - 1);
+          return;
+        }
+
+        if (event.key === 'Enter' || event.key === ' ') {
+          const focusedOption = event.target.closest('.filter-option');
+
+          if (!focusedOption) {
+            return;
+          }
+
+          event.preventDefault();
+          setDropdownSelection(filterKey, focusedOption.dataset.value);
+          closeDropdown(filterKey);
+          dropdown.trigger.focus();
+        }
+      });
     });
 
-    nodes.quarterFilter.addEventListener('change', (event) => {
-      state.quarter = event.target.value;
-      render();
+    document.addEventListener('click', (event) => {
+      const clickedInsideDropdown = Object.values(dropdownRegistry).some(
+        (dropdown) => dropdown.root.contains(event.target),
+      );
+
+      if (!clickedInsideDropdown) {
+        closeAllDropdowns();
+      }
     });
 
-    nodes.categoryFilter.addEventListener('change', (event) => {
-      state.category = event.target.value;
-      render();
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeAllDropdowns();
+      }
     });
 
     nodes.searchInput.addEventListener('input', (event) => {
@@ -307,6 +579,7 @@
   }
 
   function bootstrap() {
+    registerDropdowns();
     populateFilters(window.LEADERBOARD_DATA);
     bindEvents();
     render();
