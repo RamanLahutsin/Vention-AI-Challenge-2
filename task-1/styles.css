@@ -159,6 +159,10 @@ body {
   background: #d9d9de;
 }
 
+.filter-option[data-value='all'][aria-selected='true'] {
+  background: transparent;
+}
+
 .custom-dropdown.is-open .filter-options {
   opacity: 1;
   transform: translateY(0);
