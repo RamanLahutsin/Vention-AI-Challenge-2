@@ -83,21 +83,3 @@ Configured GitHub Pages deployment via GitHub Actions workflow.
 
 Expected public URL:
 https://ramanlahutsin.github.io/Vention-AI-Challenge-2/task-1/
-
-## Post-Implementation Updates (Phases 1 and 2)
-
-1. UI polish updates
-
-- Reduced overall visual scale to better match the target screenshot proportions.
-- Updated filter controls to a neutral gray style.
-- Removed focus outline from the employee search input on click/focus.
-- Fixed mobile layout issue where the search field could overflow its container.
-
-2. Category model updates
-
-- Replaced the previous two-category model with three categories:
-  - Education
-  - Public Speaking
-  - University Partnership
-- Updated synthetic data generation and filter logic to support the new category taxonomy.
-- Updated row metrics rendering so category counts align with the new categories.
