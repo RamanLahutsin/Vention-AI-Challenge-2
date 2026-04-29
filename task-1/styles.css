@@ -156,10 +156,6 @@ body {
 }
 
 .filter-option[aria-selected='true'] {
-  background: #d9d9de;
-}
-
-.filter-option[data-value='all'][aria-selected='true'] {
   background: transparent;
 }
 
