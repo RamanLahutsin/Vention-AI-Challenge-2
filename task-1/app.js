@@ -186,7 +186,7 @@
     }
 
     nodes.list.innerHTML = filteredData
-      .map((entry, index) => {
+      .map((entry) => {
         const isExpanded = state.expandedId === entry.id;
         const metrics = [];
 

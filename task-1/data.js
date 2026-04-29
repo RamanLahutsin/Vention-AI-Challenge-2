@@ -215,11 +215,14 @@
         activity: title,
         category,
         date: formatDate(activityDate),
+        timestamp: activityDate.getTime(),
         points,
       });
     }
 
-    return activities.sort((a, b) => (a.date < b.date ? 1 : -1));
+    return activities
+      .sort((a, b) => b.timestamp - a.timestamp)
+      .map(({ timestamp, ...activity }) => activity);
   }
 
   const years = [2024, 2025, 2026];
