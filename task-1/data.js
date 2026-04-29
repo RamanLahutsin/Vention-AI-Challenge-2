@@ -199,14 +199,24 @@
     const quarterStartMonth = (quarter - 1) * 3;
     const activityCount = Math.max(2, Math.min(5, Math.round(score / 100)));
     const activities = [];
+    const categories = [
+      'Education',
+      'Public Speaking',
+      'University Partnership',
+    ];
+    const categoryPrefixes = {
+      Education: 'EDU',
+      'Public Speaking': 'SPK',
+      'University Partnership': 'UNI',
+    };
 
     for (let i = 0; i < activityCount; i += 1) {
-      const category = random() > 0.35 ? 'Public Speaking' : 'Learning';
+      const category = pick(categories);
       const points = Math.max(
         8,
         Math.round((score / activityCount) * (0.3 + random() * 0.5)),
       );
-      const title = `[${category === 'Public Speaking' ? 'SPK' : 'EDU'}] ${pick(activityTitlePool)}: ${pick(activityTopicPool)}`;
+      const title = `[${categoryPrefixes[category]}] ${pick(activityTitlePool)}: ${pick(activityTopicPool)}`;
       const day = 1 + Math.floor(random() * 27);
       const monthOffset = Math.floor(random() * 3);
       const activityDate = new Date(year, quarterStartMonth + monthOffset, day);
@@ -235,8 +245,13 @@
     const totalPoints = scoreForRank(rank);
 
     const categoryUnits = Math.max(1, Math.round(totalPoints / 32));
-    const learningCount = Math.floor(random() * Math.max(2, categoryUnits));
-    const publicSpeakingCount = Math.max(0, categoryUnits - learningCount);
+    const educationCount = Math.floor(random() * (categoryUnits + 1));
+    const remainder = Math.max(0, categoryUnits - educationCount);
+    const publicSpeakingCount = Math.floor(random() * (remainder + 1));
+    const universityPartnershipCount = Math.max(
+      0,
+      remainder - publicSpeakingCount,
+    );
 
     const employee = {
       id: `emp-${rank}`,
@@ -248,8 +263,9 @@
       quarter: `Q${quarter}`,
       totalPoints,
       categoryStats: {
+        education: educationCount,
         publicSpeaking: publicSpeakingCount,
-        learning: learningCount,
+        universityPartnership: universityPartnershipCount,
       },
       activities: buildRecentActivities(totalPoints, year, quarter),
     };

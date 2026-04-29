@@ -35,10 +35,20 @@
     </svg>
   `;
 
-  const iconLearning = `
+  const iconEducation = `
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M12 4 2 9l10 5 8-4v5h2V9L12 4Z" fill="none" stroke="currentColor" stroke-width="2"></path>
       <path d="M6 12v4c0 1.8 2.7 3 6 3s6-1.2 6-3v-4" fill="none" stroke="currentColor" stroke-width="2"></path>
+    </svg>
+  `;
+
+  const iconPartnership = `
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="7" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="2"></circle>
+      <circle cx="17" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="2"></circle>
+      <path d="M4 18v-1c0-2.2 1.8-4 4-4h2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+      <path d="M20 18v-1c0-2.2-1.8-4-4-4h-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+      <path d="M9.5 17h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
     </svg>
   `;
 
@@ -70,12 +80,14 @@
       nodes.quarterFilter.append(option);
     });
 
-    ['Public Speaking', 'Learning'].forEach((category) => {
-      const option = document.createElement('option');
-      option.value = category;
-      option.textContent = category;
-      nodes.categoryFilter.append(option);
-    });
+    ['Education', 'Public Speaking', 'University Partnership'].forEach(
+      (category) => {
+        const option = document.createElement('option');
+        option.value = category;
+        option.textContent = category;
+        nodes.categoryFilter.append(option);
+      },
+    );
   }
 
   function getFilteredData() {
@@ -86,9 +98,11 @@
         state.quarter === 'all' || entry.quarter === state.quarter;
       const categoryMatch =
         state.category === 'all' ||
+        (state.category === 'Education' && entry.categoryStats.education > 0) ||
         (state.category === 'Public Speaking' &&
           entry.categoryStats.publicSpeaking > 0) ||
-        (state.category === 'Learning' && entry.categoryStats.learning > 0);
+        (state.category === 'University Partnership' &&
+          entry.categoryStats.universityPartnership > 0);
       const queryMatch = entry.name
         .toLowerCase()
         .includes(state.query.toLowerCase());
@@ -190,11 +204,11 @@
         const isExpanded = state.expandedId === entry.id;
         const metrics = [];
 
-        if (entry.categoryStats.learning > 0) {
+        if (entry.categoryStats.education > 0) {
           metrics.push(`
             <div class="metric">
-              ${iconLearning}
-              <strong>${entry.categoryStats.learning}</strong>
+              ${iconEducation}
+              <strong>${entry.categoryStats.education}</strong>
             </div>
           `);
         }
@@ -204,6 +218,15 @@
             <div class="metric">
               ${iconSpeaking}
               <strong>${entry.categoryStats.publicSpeaking}</strong>
+            </div>
+          `);
+        }
+
+        if (entry.categoryStats.universityPartnership > 0) {
+          metrics.push(`
+            <div class="metric">
+              ${iconPartnership}
+              <strong>${entry.categoryStats.universityPartnership}</strong>
             </div>
           `);
         }
