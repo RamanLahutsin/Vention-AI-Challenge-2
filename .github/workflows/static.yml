@@ -3,10 +3,8 @@ name: Deploy Task 1 to GitHub Pages
 on:
   push:
     branches:
+      - task-1
       - main
-    paths:
-      - .github/workflows/static.yml
-      - task-1/**
   workflow_dispatch:
 
 permissions:
