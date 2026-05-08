@@ -1,0 +1,6 @@
+rsvp_id,event_id,event_title,user_id,display_name,contact_email,status,code,checked_in_at,created_at
+3f9a1c2e-7b8d-4e1a-9c3b-1a2b3c4d5e6f,a1b2c3d4-e5f6-4789-90ab-cdef12345678,Past Picnic,11111111-1111-1111-1111-111111111111,Alice Johnson,alice@example.com,going,a1b2c3,2026-05-01T18:05:22Z,2026-04-20T10:15:00Z
+4a8b2d3f-8c9e-4f2b-ad4c-2b3c4d5e6f70,a1b2c3d4-e5f6-4789-90ab-cdef12345678,Past Picnic,22222222-2222-2222-2222-222222222222,Bob Smith,bob@example.com,going,b2c3d4,2026-05-01T18:12:47Z,2026-04-21T09:02:11Z
+5b9c3e4a-9daf-4a3c-be5d-3c4d5e6f7081,a1b2c3d4-e5f6-4789-90ab-cdef12345678,Past Picnic,33333333-3333-3333-3333-333333333333,Carol Davis,carol@example.com,going,c3d4e5,,2026-04-22T14:30:00Z
+6cad4f5b-aeb0-4b4d-cf6e-4d5e6f708192,a1b2c3d4-e5f6-4789-90ab-cdef12345678,Past Picnic,44444444-4444-4444-4444-444444444444,Dan Lee,dan@example.com,waitlist,d4e5f6,,2026-04-23T08:45:30Z
+7dbe5a6c-bfc1-4c5e-da7f-5e6f70819203,a1b2c3d4-e5f6-4789-90ab-cdef12345678,Past Picnic,55555555-5555-5555-5555-555555555555,Eva Martinez,eva@example.com,cancelled,e5f607,,2026-04-19T16:20:00Z
